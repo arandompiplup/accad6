@@ -4,15 +4,42 @@ from pynamodb.exceptions import PutError
 
 from os import getenv
 
-from dotenv import load_dotenv
-load_dotenv()
+import boto3
+from botocore.exceptions import ClientError
 
+
+def get_secret():
+
+    secret_name = "ddb-things"
+    region_name = "ap-southeast-1"
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        # For a list of exceptions thrown, see
+        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        raise e
+
+    secret = get_secret_value_response['SecretString']
+    return secret
+    # Your code goes here.
+value = get_secret()
+valueSplit = value.split("\n")
 
 class Banana(Model):
     class Meta:
-        access_key = getenv("AWS_ACCESS_KEY_ID")
-        secret_key = getenv("AWS_SECRET_ACCESS_KEY")
-        aws_region = getenv("AWS_REGION")
+        access_key = valueSplit[1]
+        secret_key = valueSplit[3]
+        aws_region = valueSplit[5]
         
         table_name = "accad6"
         # Specifies the region
