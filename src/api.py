@@ -2,52 +2,49 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from pynamodb.exceptions import PutError
 
-from os import getenv
-
 import boto3
 from botocore.exceptions import ClientError
 
+from os import getenv
+from dotenv import load_dotenv
 
-def get_secret():
+load_dotenv()
 
-    secret_name = "ddb-things"
+
+def get_secrets():
+    secrets_name = "ddb-things"
     region_name = "ap-southeast-1"
 
-    # Create a Secrets Manager client
     session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
+    client = session.client(service_name="secretsmanager", region_name=region_name)
+    if session.region_name == "ap-southeast-1":
+        try:
+            get_secret_value_response = client.get_secret_value(SecretId=secrets_name)
+            secrets = get_secret_value_response["SecretString"].split("/n")
+            print("aws")
+            secrets = {secrets[i]: secrets[i * 2 + 1] for i in range(len(secrets))}
+        except ClientError as e:
+            raise e
+    else:
+        print("local")
+        secrets = {
+            "AWS_ACCESS_KEY_ID": getenv("AWS_ACCESS_KEY_ID"),
+            "AWS_SECRET_ACCESS_KEY": getenv("AWS_SECRET_ACCESS_KEY"),
+            "AWS_REGION": getenv("AWS_REGION"),
+        }
+    return secrets
 
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
-    except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-        raise e
-
-    secret = get_secret_value_response['SecretString']
-    return secret
-    # Your code goes here.
-value = get_secret()
-valueSplit = value.split("\n")
-valueDict = {valueSplit[i*2]: valueSplit[i*2+1] for i in range(len(valueSplit))}
 
 class Banana(Model):
     class Meta:
-        access_key = valueSplit[1]
-        secret_key = valueSplit[3]
-        aws_region = valueSplit[5]
-        
+        secrets = get_secrets()
+        access_key = secrets["AWS_ACCESS_KEY_ID"]
+        secret_key = secrets["AWS_SECRET_ACCESS_KEY"]
+        aws_region = secrets["AWS_REGION"]
+
         table_name = "accad6"
-        # Specifies the region
-        region = "ap-southeast-1"
-        # Specifies the write capacity
+        region = aws_region
         write_capacity_units = 10
-        # Specifies the read capacity
         read_capacity_units = 10
 
     username = UnicodeAttribute(hash_key=True)
@@ -87,5 +84,3 @@ def deleteUser(user: str) -> None:
     deleteTarget = Banana.get(user)
     deleteTarget.delete()
     return None
-
-createBanana("api-test")
