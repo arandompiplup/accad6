@@ -2,8 +2,18 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from pynamodb.exceptions import PutError
 
+from os import getenv
+
+from dotenv import load_dotenv
+load_dotenv()
+
+
 class Banana(Model):
     class Meta:
+        access_key = getenv("AWS_ACCESS_KEY_ID")
+        secret_key = getenv("AWS_SECRET_ACCESS_KEY")
+        aws_region = getenv("AWS_REGION")
+        
         table_name = "accad6"
         # Specifies the region
         region = "ap-southeast-1"
@@ -33,10 +43,6 @@ def readBananaFull(user: str) -> Banana:
     userItem = Banana.get(user)
     return userItem
 
-def readBananaName(user: str) -> str:
-    bananaName = Banana.get(user).username
-    return bananaName
-
 
 def readBananaNum(user: str) -> int:
     bananaQty = Banana.get(user).banana
@@ -48,7 +54,10 @@ def addBanana(user: str, bananas: int) -> None:
     userItem.update(actions=[Banana.banana.set(bananas)])
     return userItem
 
+
 def deleteUser(user: str) -> None:
     deleteTarget = Banana.get(user)
     deleteTarget.delete()
     return None
+
+createBanana("api-test")
