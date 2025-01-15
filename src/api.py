@@ -34,6 +34,7 @@ def get_secret():
     # Your code goes here.
 value = get_secret()
 valueSplit = value.split("\n")
+valueDict = {valueSplit[i*2]: valueSplit[i*2+1] for i in range(len(valueSplit))}
 
 class Banana(Model):
     class Meta:
