@@ -14,10 +14,10 @@ def test_app(url):
         driver.find_element(By.NAME, "login").click()
 
         assert driver.title == "App"
-        assert driver.find_element(By.TAGNAME, "h2").text == "User: test"
+        assert driver.find_element(By.TAG_NAME, "h2").text == "User: test"
 
         driver.find_element(By.NAME, "clicker").click()
-        assert driver.find_element(By.TAGNAME, "p").text == "Bananas: 1"
+        assert driver.find_element(By.TAG_NAME, "p").text == "Bananas: 1"
 
         driver.find_element(By.NAME, "deleter").click()
         assert driver.title == "Login"
