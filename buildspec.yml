@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <repo>
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t <image> .
+      - docker tag <repo>
+  post_build:
+    commands:
+      - echo Pushing Docker image to ECR...
+      - docker push <repo>
+
+artifacts:
+  files:
+    - "**/*"
+  discard-paths: yes
