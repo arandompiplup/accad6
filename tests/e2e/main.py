@@ -11,7 +11,7 @@ def test_app(url):
         assert driver.title == "Login"
 
         driver.find_element(By.NAME, "username").send_keys("test")
-        driver.find_element(By.TYPE, "submit").click()
+        driver.find_element(By.NAME, "submit").click()
 
         assert driver.title == "App"
         assert driver.find_element(By.TAGNAME, "h2").text == "User: test"
