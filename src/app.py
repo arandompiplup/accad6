@@ -22,11 +22,9 @@ def login():
 @client.route("/login-api", methods=["POST"])
 def login_api():
     username = request.form.get("username")
-    # session["user"] = api.createBanana(username)
     session["username"] = username
     api.createBanana(username)
     session["bananas"] = api.readBananaNum(username)
-    # session["bananas"] = api.getBananaNum(session["user"].username)
     return redirect(url_for("app"))
 
 
@@ -56,10 +54,5 @@ def delete_api():
 
 
 if __name__ == "__main__":
-    load_dotenv()
-    access_key = os.getenv("AWS_ACCESS_KEY_ID")
-    secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-    aws_region = os.getenv("AWS_REGION")
-
     client.secret_key = secrets.token_urlsafe(4)
     client.run(host="0.0.0.0", port=8080, debug=True)
