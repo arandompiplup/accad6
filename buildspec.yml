@@ -4,16 +4,16 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <repo>
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 598306085737.dkr.ecr.ap-southeast-1.amazonaws.com
   build:
     commands:
       - echo Building Docker image...
-      - docker build -t <image> .
-      - docker tag <repo>
+      - docker build -t accad6 .
+      - docker tag accad6:latest 598306085737.dkr.ecr.ap-southeast-1.amazonaws.com/accad6:latest
   post_build:
     commands:
       - echo Pushing Docker image to ECR...
-      - docker push <repo>
+      - docker push 598306085737.dkr.ecr.ap-southeast-1.amazonaws.com/accad6:latest
 
 artifacts:
   files:
