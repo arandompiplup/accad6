@@ -4,6 +4,10 @@ By Ryan, Kon Chern and Oswald
 ## Banana Clicker App
 We created an app where users can click to get bananas.
 
+## Links
+Github repo:https://github.com/arandompiplup/accad6/tree/main
+App: https://4ngigjfepj.ap-southeast-1.awsapprunner.com/
+
 ### User flow
 A user entering the app will first have to login with a username. If the user signs in with a unique username, they would enter the game with 0 bananas. If the user is logging in to an existing account, the user would enter the game with their last saved number of bananas under that username.
 
@@ -24,14 +28,18 @@ We used CodeBuild to create a build project. We also create a pipeline whose sou
 ## Considerations
 1. Instead of our initial idea to update the database whenever the user clicks the button to gain bananas, we added a `Send Bananas` button for users to update their banana count. This greatly helps to reduce the number of queries to the DynamoDB database.
 
-2. Since we did not implement a means to prevent multiple users from logging in to the same account concurrently, we decided that when a user saves their number of bananas, it queries the database to obtain the updated banana count and store it as `bananas`. This prevents clashes when updating the banana count of the account
- 
 
 ## Challenges
 
 ### 1. Updating DynamoDB values
 When we tried to implement the clicker, we were not able to increase the `clicks` count even though the number of clicks registered was increasing as expected. Additionally, we were unable to update the database values to the updated total. We identified that this was because the `.add` method did not function the way we initially thought. We managed to fix this by incrementing a session variable `bananas` and using the `.set` method instead.
 
+### 2. Testing constantly fails
+We were only able to run tests locally rather than on the test stage in the pipeline
+Furthermore, the tests only really work on Ryan's machine
+
+### 3. Exceed API limit
+We constantly exceed Docker's API limits because the pipeline restarts after every push. To prevent this, we made the updating of the pipeline to be manual rather than automated
 
 ## References
 Banana: https://www.svgfind.com/svg/10902481/banana-republic
