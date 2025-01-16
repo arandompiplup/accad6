@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run tests
-#RUN pytest
+RUN pytest
 
 # Expose port
 EXPOSE 8080
