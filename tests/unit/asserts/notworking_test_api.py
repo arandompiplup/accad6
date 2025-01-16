@@ -1,6 +1,12 @@
 from pytest import fixture
+import importlib
 
-import api
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent/"src"))
+
+api = importlib.import_module("src.api")
 
 @fixture
 def user():
