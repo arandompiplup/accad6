@@ -32,3 +32,7 @@ We used CodeBuild to create a build project. We also create a pipeline whose sou
 
 ### 1. Updating DynamoDB values
 When we tried to implement the clicker, we were not able to increase the `clicks` count even though the number of clicks registered was increasing as expected. Additionally, we were unable to update the database values to the updated total. We identified that this was because the `.add` method did not function the way we initially thought. We managed to fix this by incrementing a session variable `bananas` and using the `.set` method instead.
+
+
+## References
+Banana: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr4PRsTzw6RUVcHlpeFEuFDjd8OeeXax3l59al3P53a0-d_oNWepbhtGVAqUHYfMmcOVo&usqp=CAU
