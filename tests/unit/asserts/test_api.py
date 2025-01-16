@@ -1,8 +1,6 @@
 import importlib
 from pytest import fixture
 
-import pynamodb
-
 api = importlib.import_module("src.api")
 
 @fixture
