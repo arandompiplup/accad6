@@ -8,22 +8,25 @@
   </head>
   <body>
     <div class="container">
-        <div class="d-flex justify-content-center align-items-center" style="height: auto; width:auto;">
-            <div class="col-12 col-md-6" style="max-width:fit-content">
-                <img class="mx-auto" src="../images/banana.png" >
-            </div>
-        </div>
         <div class="row justify-content-center align-items-center" style="height: auto;">
-            <div class="col-12 col-md-6" style="max-width:fit-content">
-                <h1>Click for Bananas</h1>
-                <h2>User: {{ username }}</h2>
+            <div class="col-12 col-md-6" style="max-width:fit-content; padding-top: 20px;">
+                <div class="container text-center">
+                    <h1>Click for Bananas</h1>
+                    <h2 style="font-style: italic;">{{ username }}</h2>
+                </div>
                 <form method="POST">
-                <button name="clicker">Click</button>
-                 </form>
-                <p>Bananas: {{ bananas }}</p>
-                <form action="delete-api"method="DELETE">
-                    <button name="deleter">Delete</button>
+                    <div class="container text-center">
+                        <button name="clicker" class="btn" style="border: none; padding: 0; background: transparent;">
+                            <img src="../images/banana.png" alt="button image" style="width: 100px; padding: 10px;"/>
+                        </button>
+                    </div>
                 </form>
+                <div class="container text-center">
+                    <p class="text-center">Bananas: {{ bananas }}</p>
+                    <form action="delete-api"method="DELETE">
+                        <button name="deleter" class="text-center">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
