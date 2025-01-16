@@ -1,6 +1,6 @@
 from pytest import fixture
 
-import src.api as api
+import api
 
 @fixture
 def user():
