@@ -1,6 +1,3 @@
-import os
-from dotenv import load_dotenv
-
 import secrets
 from flask import Flask, render_template, request, redirect, url_for, session
 
@@ -43,6 +40,7 @@ def app():
         )
     else:
         return redirect(url_for("login"))
+
 
 @client.route("/delete-api", methods=["GET", "DELETE"])
 def delete_api():
