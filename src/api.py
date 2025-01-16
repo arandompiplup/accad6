@@ -20,9 +20,10 @@ def get_secrets():
     if session.region_name == "ap-southeast-1":
         try:
             get_secret_value_response = client.get_secret_value(SecretId=secrets_name)
-            secrets = get_secret_value_response["SecretString"].split("/n")
+            secrets = get_secret_value_response["SecretString"].split("\n")
             print("aws")
-            secrets = {secrets[i]: secrets[i * 2 + 1] for i in (range(len(secrets))/2)}
+            #for i in range(3)
+            secrets = {secrets[i]: secrets[i + 1] for i in (range(0, len(secrets), 2))}
         except ClientError as e:
             raise e
     else:
