@@ -41,6 +41,7 @@ def app():
     else:
         return redirect(url_for("login"))
 
+
 @client.route("/delete-api", methods=["GET", "DELETE"])
 def delete_api():
     username = session.get("username")
