@@ -2,6 +2,8 @@ from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute, NumberAttribute
 from pynamodb.exceptions import PutError
 
+from contextlib import suppress
+
 import boto3
 from botocore.exceptions import ClientError
 
@@ -12,12 +14,12 @@ load_dotenv()
 
 
 def get_secrets():
-    secrets_name = "ddb-things"
     region_name = "ap-southeast-1"
 
     session = boto3.session.Session()
     client = session.client(service_name="secretsmanager", region_name=region_name)
     if session.region_name == "ap-southeast-1":
+        secrets_name = "ddb-things"
         try:
             get_secret_value_response = client.get_secret_value(SecretId=secrets_name)
             secrets = get_secret_value_response["SecretString"].split("/n")
@@ -57,21 +59,17 @@ if not Banana.exists():
 
 def createBanana(user: str, bananaNo: int = 0) -> Banana:
     createItem = Banana(user, banana=bananaNo)
-    try:
+    with suppress(PutError):
         createItem.save(condition=Banana.username.does_not_exist())
-    except PutError:
-        pass
     return createItem
 
 
 def readBananaFull(user: str) -> Banana:
-    userItem = Banana.get(user)
-    return userItem
+    return Banana.get(user)
 
 
 def readBananaNum(user: str) -> int:
-    bananaQty = Banana.get(user).banana
-    return bananaQty
+    return Banana.get(user).banana
 
 
 def addBanana(user: str, bananas: int) -> None:
