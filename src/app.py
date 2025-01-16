@@ -1,7 +1,7 @@
 import secrets
 from flask import Flask, render_template, request, redirect, url_for, session
 
-import api
+import src.api as api
 
 client = Flask(__name__)
 
