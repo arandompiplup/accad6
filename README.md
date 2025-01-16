@@ -15,7 +15,7 @@ When the user wants to save their number of bananas, they can click the `Save` b
 ### App-side infrastructure
 We created a flask app with 2 main sites, `/login` and `/app`. The `/app` page is the game. When the user logs into the game with `username`, we query the DynamoDB database to look for the primary key `username`. If the username is not found, we add a record where the username is `username` and bananas is 0.
 
-The number of bananas from the database is stored as session variable `bananas`. When the user clicks the button to gain a banana, `bananas` increases by 1. When the user saves their new number of bananas, we query the database to update `bananas` in case it has changed during the session. Then, we then update the database value with their sum.
+The number of bananas from the database is stored as session variable `bananas`. When the user clicks the button to gain a banana, `bananas` and the banana count in the database increases by 1.
 
 ### AWS-side infrastructure
 We used CodeBuild to create a build project. We also create a pipeline whose source is from our GitHub Repo. The pipeline places an output image in ECR. For storing accounts and their number of bananas, we opted to use DynamoDB. Using the image, we created a service via AppRunner.
@@ -25,8 +25,7 @@ We used CodeBuild to create a build project. We also create a pipeline whose sou
 1. Instead of our initial idea to update the database whenever the user clicks the button to gain bananas, we added a `save` button for users to update their banana count. This greatly helps to reduce the number of writes to the DynamoDB database.
 <!-- ? are we actually implementing this -->
 2. Since we did not implement a means to prevent multiple users from logging in to the same account concurrently, we decided that when a user saves their number of bananas, it queries the databse to obtain the updated banana count and store it as `bananas`. This prevents clashes when updating the banana count of the account
-3. We used DynamoDB instead of RDS as RDS is more costly
-<!-- ? who say one -->
+ 
 
 ## Challenges
 
@@ -35,4 +34,4 @@ When we tried to implement the clicker, we were not able to increase the `clicks
 
 
 ## References
-Banana: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr4PRsTzw6RUVcHlpeFEuFDjd8OeeXax3l59al3P53a0-d_oNWepbhtGVAqUHYfMmcOVo&usqp=CAU
+Banana: https://www.svgfind.com/svg/10902481/banana-republic

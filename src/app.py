@@ -30,9 +30,7 @@ def app():
     username = session.get("username")
     if request.method == "POST":
         session["bananas"] += 1
-        api.addBanana(username, session["bananas"])
-        print(session["bananas"])
-        print(api.readBananaNum(username))
+        # api.addBanana(username, session["bananas"])
 
     if session["username"]:
         return render_template(
@@ -40,6 +38,14 @@ def app():
         )
     else:
         return redirect(url_for("login"))
+
+
+@client.route("/send-api", methods=["GET", "POST"])
+def send_api():
+    username = session.get("username")
+    api.addBanana(username, session["bananas"])
+    session["bananas"] = api.readBananaNum(username)
+    return redirect(url_for("app"))
 
 
 @client.route("/delete-api", methods=["GET", "DELETE"])
