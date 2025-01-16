@@ -34,7 +34,7 @@ def app():
 
     if session["username"]:
         return render_template(
-            "app.html", username=username, bananas=api.readBananaNum(username)
+            "app.html", username=username, cloud_bananas=api.readBananaNum(username), local_bananas=session["bananas"]
         )
     else:
         return redirect(url_for("login"))

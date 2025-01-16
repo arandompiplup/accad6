@@ -22,7 +22,7 @@
           style="max-width: fit-content; padding-top: 20px"
         >
           <div class="container text-center">
-            <h1>Click for Bananas</h1>
+            <h1>Click the Bananas for Bananas</h1>
             <h2 style="font-style: italic">{{ username }}</h2>
           </div>
           <form method="POST">
@@ -65,14 +65,15 @@
             </div>
           </form>
           <div class="container text-center">
-            <p class="text-center">Bananas: {{ bananas }}</p>
+            <p name="local-bananas" class="text-center mb-0">Local Bananas: {{ local_bananas }} {{ "(+{})".format(local_bananas-cloud_bananas) if local_bananas > cloud_bananas else "" }}</p>
+            <p name="cloud-bananas" class="text-center">Cloud Bananas: {{ cloud_bananas }}</p>
             <form action="send-api" method="POST">
               <button name="send" class="text-center btn btn-success">
                 Send Bananas
               </button>
             </form>
             <form action="delete-api" method="DELETE">
-              <button name="deleter" class="text-center btn btn-danger">
+              <button name="deleter" class="text-center btn btn-danger mt-2">
                 Delete Account
               </button>
             </form>
